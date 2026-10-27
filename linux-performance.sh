@@ -171,9 +171,6 @@ else
     printf "Process listing unavailable\n"
 fi
 
-section "REPORT COMPLETE"
-printf "Finished at    : %s\n" "$(date '+%Y-%m-%d %H:%M:%S %Z')"
-
 # 6. NETWORKING - LISTENING PORTS
 section "6. NETWORKING - LISTENING PORTS"
 
@@ -204,3 +201,6 @@ else
 fi
 
 printf "${YELLOW}Note: Showing listening TCP/UDP ports. Process names may require root/sudo privileges.${RESET}\n"
+
+section "REPORT COMPLETE"
+printf "Finished at    : %s\n" "$(date '+%Y-%m-%d %H:%M:%S %Z')"
