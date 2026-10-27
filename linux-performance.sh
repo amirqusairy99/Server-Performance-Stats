@@ -173,3 +173,34 @@ fi
 
 section "REPORT COMPLETE"
 printf "Finished at    : %s\n" "$(date '+%Y-%m-%d %H:%M:%S %Z')"
+
+# 6. NETWORKING - LISTENING PORTS
+section "6. NETWORKING - LISTENING PORTS"
+
+if command -v ss >/dev/null 2>&1; then
+    printf "%-8s %-30s %-15s %-25s\n" "PROTO" "LOCAL ADDRESS" "STATE" "PROCESS"
+    
+    ss -tulpn 2>/dev/null | awk '
+    NR > 1 {
+        proto = $1
+        state = $2
+        local_addr = $4
+        process = ($7 != "" ? $7 : "N/A")
+        
+        # Clean up process string formatting from ss output
+        gsub(/users:\(\(/, "", process)
+        gsub(/\),\)/, "", process)
+        gsub(/"/, "", process)
+        
+        printf "%-8s %-30s %-15s %-25.25s\n", proto, local_addr, state, process
+    }'
+elif command -v netstat >/dev/null 2>&1; then
+    netstat -tulpn 2>/dev/null | awk '
+    NR > 2 {
+        printf "%-8s %-30s %-15s %-25s\n", $1, $4, $6, $7
+    }'
+else
+    printf "Port listing unavailable (neither ss nor netstat found)\n"
+fi
+
+printf "${YELLOW}Note: Showing listening TCP/UDP ports. Process names may require root/sudo privileges.${RESET}\n"
