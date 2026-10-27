@@ -40,6 +40,7 @@ read_cpu() {
 section "LINUX PERFORMANCE REPORT"
 
 printf "Hostname       : %s\n" "$(hostname)"
+printf "OS Version     : %s\n" "$(. /etc/os-release && echo "$PRETTY_NAME")"
 printf "Date           : %s\n" "$(date '+%Y-%m-%d %H:%M:%S %Z')"
 printf "Kernel         : %s\n" "$(uname -r)"
 printf "Architecture   : %s\n" "$(uname -m)"
